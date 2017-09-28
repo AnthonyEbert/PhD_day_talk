@@ -1,16 +1,24 @@
 ---
-title: "Dynamic Queueing Networks: Simulation, Estimation and Prediction"
+title: 'Dynamic Queueing Networks: Simulation, Estimation and Prediction'
 author: "Anthony Ebert"
 date: "29/09/2017"
 output:
   ioslides_presentation:
     css: ./style.css
+  beamer_presentation: default
 ---
 
 
 
 
 # Dynamic Queueing Networks: Simulation, Estimation and Prediction
+
+## Test
+
+```{r}
+x <- rnorm(1000)
+hist(x)
+```
  
 ## Our Priors
 
@@ -21,7 +29,7 @@ output:
 
 ## Should you care?
 
-![](./twitter_poll.png)
+![](./figure/benchmark.png)
 
 
 ## Why you should care about Git/GitHub
