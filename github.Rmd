@@ -1,7 +1,7 @@
 ---
-title: "This Thing Called Github"
-author: "Miles McBain"
-date: "April 12, 2017"
+title: "Dynamic Queueing Networks: Simulation, Estimation and Prediction"
+author: "Anthony Ebert"
+date: "29/09/2017"
 output:
   ioslides_presentation:
     css: ./style.css
@@ -10,7 +10,7 @@ output:
 
 
 
-# This thing called Github
+# Dynamic Queueing Networks: Simulation, Estimation and Prediction
  
 ## Our Priors
 
