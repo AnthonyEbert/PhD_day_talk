@@ -4,32 +4,86 @@ author: "Anthony Ebert"
 date: "29/09/2017"
 output:
   ioslides_presentation:
+    mathjax: default
+    transition: faster
     css: ./style.css
+    logo: figure/qut-logo-og-200.jpg
   beamer_presentation: default
 ---
 
+$$ $$
 
 
 
 # Dynamic Queueing Networks: Simulation, Estimation and Prediction
 
-## Test
+<!-- http://acedesk.qut.edu.au/phd_day.html -->
 
-```{r}
-x <- rnorm(1000)
-hist(x)
-```
+## What's a queue?
+
+<img src="figure/bakery.png" height="450px"/>
+
+## What's a queue? {.columns-2}
+
+<img src="figure/bakery.png" height="300px"/>
+
+Arrival time: $a_j$, when customer $j$ arrives
+
+Service time: $s_j$, how much time customer $j$ needs with a server
+
+Departure time: $d_j$, when customer $j$ has been served
  
-## Our Priors
+## Kendall's notation
 
-* Who among us:
-  - Is using Github?
-  - Feels like they should be using Github?
-  - Sees no reason why they would use Github?
+$f_{\delta} / f_s / K / C / n / R$
 
-## Should you care?
+$f_{\delta}$: inter-arrival distribution
 
-![](./figure/benchmark.png)
+$f_s$: service distribution
+
+$K$: number of servers
+
+$C$: capacity of system
+
+$n$: number of customers
+
+$R$: service discipline
+
+## Performance measures
+
+system utilization: $\rho = \frac{\mu}{\lambda}$
+
+The steady state probability of $N$ customers in a $M/M/K$ system is,
+
+\[
+\begin{align}
+P(0) &= \left[\frac{ (K \rho)^K}{K! (1 - \rho)} + 1 + \sum_{i=1}^{K-1} \frac{(K \rho)^i}{i!}   \right]^{-1} \\
+P(N) &= \begin{cases} 
+P(0) \frac{(K \rho)^n }{N!} & \quad  N \leq K\\
+P(0) \frac{(K \rho)^n }{K! K^{N-K}} & \text{otherwise}
+\end{cases} , \label{eq:pn}
+\end{align}
+\]
+
+## Simulation {.centered}
+
+![](./figure/queuecomputer_gif.gif)
+
+R package queuecomputer
+
+## It's fast {.centered}
+
+<img src="figure/benchmark.png" height="450px"/>
+
+## Queueing Networks
+
+<img src="figure/internet_QN.png" height="300px"/>
+
+Sutton, C., & Jordan, M. I. (2011). Bayesian inference for queueing networks and modeling of internet services. The Annals of Applied Statistics, 254-282.
+
+## International Airport
+
+<img src="figure/airport_data.png" height="450px"/>
 
 
 ## Why you should care about Git/GitHub
