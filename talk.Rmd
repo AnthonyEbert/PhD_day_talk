@@ -24,15 +24,17 @@ $$ $$
 
 <img src="figure/bakery.png" height="450px"/>
 
-## What's a queue? {.columns-2}
+## What's a queue? 
 
-<img src="figure/bakery.png" height="300px"/>
+<!-- <img src="figure/bakery.png" height="300px"/> -->
 
 Arrival time: $a_j$, when customer $j$ arrives
 
 Service time: $s_j$, how much time customer $j$ needs with a server
 
 Departure time: $d_j$, when customer $j$ has been served
+
+Waiting time: $w_j = d_j - a_j - s_j$, how long customer $j$ waited to be served
  
 ## Kendall's notation
 
