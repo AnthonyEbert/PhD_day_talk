@@ -116,6 +116,24 @@ suppressPackageStartupMessages(library(dplyr))
 airport_simulate() %>% sample_frac()
 ```
 
+## Estimation: Approximate Bayesian Computation
+
+For many complex models $f (y|\theta)$ is easy to sample from but difficult or impossible to evaluate. Intuitively we may think that the best way to estimate $\theta$, based on observed data $y$, is to take samples from $f (y|\theta)$ with different values of $\theta$ until $x$ “looks like” $y$.
+
+<img src="figure/abc.png" height="150px"/>
+
+## Estimation: Maximum Mean Discrepancy
+
+\[
+\begin{align}
+\widehat{\text{MMD}}^2_b(X,Y|s) &=  \frac{1}{m^2} \sum_{i,j = 1}^{m}  k(x_i, x_j) \\
+ &\quad + \frac{1}{n^2} \sum_{i,j = 1}^{n} k(y_i, y_j) 
+ -  \frac{2}{mn} \sum_{i,j = 1}^{m,n}  k(x_i, y_j). 
+\end{align}
+\]
+
+Gretton, A., Borgwardt, K. M., Rasch, M., Schölkopf, B., & Smola, A. J. (2007). A kernel method for the two-sample-problem. In Advances in neural information processing systems (pp. 513-520).
+
 ## Estimation {.codefont}
 
 ```{r airport_est}
@@ -147,7 +165,7 @@ data_frame(y = unlist(y), x = unlist(x), input_output = rep(c("input", "output")
   facet_grid(key ~ .)
 ```
 
-## Estimation Results {.centered}
+## Estimation: Results {.centered}
 
 ![](./figure/output_13_second.png)
 
@@ -165,9 +183,9 @@ Distribution of average waiting time for passengers by flight. Resimulations wit
 
 Particle resampling of trajectories with data assimilation. 
 
-## Thank you!
+## Thank you! {.smaller}
 
-![](figure/acems-small.png)
+![](figure/acems-small.png) <br />
 
 Anthony Ebert <br />
 Supervised by: Kerrie Mengersen, Paul Wu, Fabrizio Ruggeri
@@ -177,6 +195,8 @@ Github: AnthonyEbert <br />
 Twitter: @ace_ebert 
 
 Have a look at the R package `queuecomputer`
+
+This work is supported by the Australian Research Council Centre of Excellence for Mathematical and Statistical Frontiers (ACEMS). 
 
 
 
