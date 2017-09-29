@@ -62,3 +62,8 @@ blockquote a:hover{
 blockquote em{
   font-style: italic;
 }
+
+.codefont pre {
+    font-size: 12px;
+    line-height: 10px;
+}

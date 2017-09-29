@@ -4,6 +4,7 @@ author: "Anthony Ebert"
 date: "29/09/2017"
 output:
   ioslides_presentation:
+    fig_caption: true
     mathjax: default
     transition: faster
     css: ./style.css
@@ -67,13 +68,14 @@ P(0) \frac{(K \rho)^n }{K! K^{N-K}} & \text{otherwise}
 
 ## Simulation {.centered}
 
-![](./figure/queuecomputer_gif.gif)
-
-R package queuecomputer
+![R package queuecomputer](./figure/queuecomputer_gif.gif)
 
 ## It's fast {.centered}
 
-<img src="figure/benchmark.png" height="450px"/>
+<img src="figure/benchmark.png" height="400px"/>
+
+Computation time in milliseconds for varying numbers of passengers for each
+DES/queueing package. 
 
 ## Queueing Networks
 
@@ -81,90 +83,100 @@ R package queuecomputer
 
 Sutton, C., & Jordan, M. I. (2011). Bayesian inference for queueing networks and modeling of internet services. The Annals of Applied Statistics, 254-282.
 
-## International Airport
+## International Airport {.centered}
+
+<img src="figure/airport_network2.png" height="300px"/>
+
+Queueing network model of an international airport terminal. 
+
+## International Airport Data
 
 <img src="figure/airport_data.png" height="450px"/>
 
+## Approach
 
-## Why you should care about Git/GitHub
+<img src="figure/conceptual_diagram.png" height="250px"/>
 
-  * Calling Git/Github a Distributed Version Control System is like calling Facebook a place where people post photos.
-  * THERE'S SO MUCH MORE TO IT  
-  * Github is:
-      - A project collaboration platform
-      - A social network
-      - A disaster recovery system
-      - A synchronisation service
-      - A platform for disseminating your work. Reproducible Research Anyone?
-      - A place to showcase your actual skills (>> Linked-In)
-      - A blog hosting service 
-      - A system for controlling your code versions.
-      - A place for orhpaned code snippets.
+Simulation is used to convert $\mathbf{(a,s)}$ to departure times $\mathbf{d}$. $\mathbf{Z}$ in step 7 is a function of the $\mathbf{(a,s)}, \mathbf{d}$ and $\theta_C$. It reflects features such as average waiting time, average queue length and resource utilization.
 
-## Basic building blocks of a GitHub project
+## Simulation {.columns-2}
 
-  * 'Repositories' - Repos
-  * 'Issues'
-  * 'Files'
-  * 'Commits'
-  * 'Pushes'
-  * 'Forks'
-  * 'Branches' 
-  * 'Pull-Requests' - PRs
+<img src="figure/sampling_1.png" height="360px"/>
 
-## How to learn all this crap
+<img src="figure/sampling_2.png" height="180px"/>
 
-  * Don't try. Get acquainted with the platform slowly: 
-  * Level 0:
-      - Use GitHub to manage your own solo projects. Not necessarily software. [This talk has a repo](https://github.com/MilesMcBain/burgr_20170913_github). 
-      - Get acquainted with commiting, pushing and pulling. 
-      - Use a git client like [GitKraken](https://www.gitkraken.com/).
-      - Raise issues on repos for software you use:
-          - Feature requests
-          - Bug reports with a [reprex](http://www.njtierney.com/post/2017/01/11/magic-reprex/)
-  * **DEMOS** Add a gif to this presentation.
+## Simulation {.codefont}
 
-## How to learn all this crap #2
+```{r airport_sim}
+library(AirportSimulator)
+suppressPackageStartupMessages(library(dplyr))
 
-  * Next level:
-      - Fork someone else's repo, add code or documentation, make a pull request
-      - [My First PR](http://firstpr.me) 
-      - Collaborate with someone else on a shared project.
-      - Merge your commits and resolve conflicts.
+airport_simulate() %>% sample_frac()
+```
 
-## Oh Shit Git
+## Estimation {.codefont}
 
-  * [Help is not far away](http://ohshitgit.com/).
-  * [Gitflow](https://guides.github.com/introduction/flow/)
+```{r airport_est}
+library(AirportSimulator)
 
-## My Github workflow
+true_params <- c(0.2, 20, 1.1, 3.5, 0.8, 3)
 
-The easy way:
+y <- airport_sim_1(true_params)
 
-  * Create the Repo on GH as first thing.
-  * Initialise with README - YES
-  * Clone it to `~/repos`
-  * Data goes somewhere else `~/data`
-      - Like [Googledrive](https://github.com/tidyverse/googledrive)
-  * Commit/Push early Commit/Push often.
-  * Sync across all your workstations.
-  * LIVE LIFE WORRY FREE!
+x <- airport_sim_1(true_params)
 
-## I HEART Gists
+airport_MMD(y,x, threshold = 6)
 
-A home for your orphaned code snippets!
-Related:
-  
-  * [Gistr](https://github.com/ropensci/gistr)
-  * [Gistfo](https://github.com/MilesMcBain/gistfo)
-  * [Codefinch](https://github.com/ropenscilabs/codefinch)
-  * [bl.ocks](https://bl.ocks.org/)
+proposed_params <- c(0.2, 10, 0.5, 3.5, 0.8, 3)
 
-## Reading
+x <- airport_sim_1(proposed_params)
 
-[Jenny Bryan](https://twitter.com/JennyBryan): 
+airport_MMD(y,x, threshold = 6)
+```
 
-  * [Excuse me, do you have a moment to talk about version control](https://peerj.com/preprints/3159v2/)
-  * [Happy Git and GitHub for the useR](http://happygitwithr.com/)
+## Estimation {.codefont}
+```{r, fig.height = 3}
+library(tidyr)
+library(ggplot2)
+data_frame(y = unlist(y), x = unlist(x), input_output = rep(c("input", "output"), each = 15602)) %>% 
+  gather(key = "key", value = "time", y, x) %>%
+  ggplot(aes(x = time, col = input_output)) +  
+  geom_density(adjust = 0.0001) +
+  facet_grid(key ~ .)
+```
 
-# Github Q&A
+## Estimation Results {.centered}
+
+![](./figure/output_13_second.png)
+
+ABC posterior distributions. 
+
+## Prediction {.centered}
+
+<img src="figure/p.png-1.png" height="280px"/>
+
+Distribution of average waiting time for passengers by flight. Resimulations with fixed parameters.  
+
+## Prediction {.centered}
+
+<img src="figure/combined-1.png" height="280px"/>
+
+Particle resampling of trajectories with data assimilation. 
+
+## Thank you!
+
+![](figure/acems-small.png)
+
+Anthony Ebert <br />
+Supervised by: Kerrie Mengersen, Paul Wu, Fabrizio Ruggeri
+
+Email: ac.ebert@qut.edu.au <br />
+Github: AnthonyEbert <br />
+Twitter: @ace_ebert 
+
+Have a look at the R package `queuecomputer`
+
+
+
+
+
